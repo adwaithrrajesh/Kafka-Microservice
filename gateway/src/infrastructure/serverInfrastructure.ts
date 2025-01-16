@@ -75,7 +75,7 @@ export class ServerInfrastructure {
 
     public initializeServer():void {
         this.initializeMiddlewares()
-        this.startListening()
         this.routeConfig()
+        this.startListening()
     }
 }
