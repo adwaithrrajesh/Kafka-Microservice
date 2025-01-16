@@ -6,13 +6,15 @@ import path from "path";
 import config from "./config";
 import helmet from 'helmet'
 import {logger} from './logger'
-
+import { RouteConfig } from "./route-config/route.config";
 
 export class ServerInfrastructure {
     private app: Application;
+    private routeConfigurer:RouteConfig;
 
     constructor() {
         this.app = express();
+        this.routeConfigurer = new RouteConfig()
     }
 
     /**
@@ -43,6 +45,15 @@ export class ServerInfrastructure {
         }
     }
 
+    /**
+     * @route - config
+     */
+
+    private async routeConfig(): Promise<void> {
+        await this.routeConfigurer.config(this.app);
+    }
+
+
 
     private startListening(): void {
         const port = config.PORT;
@@ -65,5 +76,6 @@ export class ServerInfrastructure {
     public initializeServer():void {
         this.initializeMiddlewares()
         this.startListening()
+        this.routeConfig()
     }
 }
