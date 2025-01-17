@@ -8,5 +8,5 @@ export default {
 
     // Services
     USER_SERVICE_URL: process.env.USER_SERVICE_URL||'',
-    PRODUCT_SERVICE_URL: process.env.USER_SERVICE_URL||''
+    PRODUCT_SERVICE_URL: process.env.PRODUCT_SERVICE_URL||''
 }
