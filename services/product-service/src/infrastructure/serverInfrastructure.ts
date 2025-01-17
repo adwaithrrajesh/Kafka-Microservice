@@ -4,14 +4,18 @@ import morgan from 'morgan';
 import config from './config'
 import { logger } from './logger';
 import { ProductRouter } from '../interface/routes/product.routes';
+import { KafkaBroker } from '../utils/broker';
 
 export class serverInfrastructure {
 
     private app : Application;
     private productRouter : ProductRouter
+    private kafka : KafkaBroker
+
     constructor(){
         this.app = express()
         this.productRouter = new ProductRouter()
+        this.kafka = new KafkaBroker()
     }
 
     private initializeMiddleware():void{
@@ -20,6 +24,12 @@ export class serverInfrastructure {
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(express.json());
     }
+
+    private async configMessageBrokers(): Promise<void> {
+        // This kafka instance will be available everywhere in this code 
+        await this.kafka.createKafkaClient()
+    }
+
 
     private configRoutes():void{
         this.app.use('/',this.productRouter.accessProductRoutes())
@@ -34,6 +44,7 @@ export class serverInfrastructure {
 
     public initializeServer():void{
         this.initializeMiddleware()
+        this.configMessageBrokers()
         this.configRoutes()
         this.startListening()
     }

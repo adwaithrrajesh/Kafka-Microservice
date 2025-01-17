@@ -12,7 +12,7 @@ export class ProductRouter {
   }
 
   private initiateRoutes(): void {
-    this.router.get('/ping', this.handle(this.controller.ping));
+    this.router.get('/ping-user', this.handle(this.controller.pingUser));
   }
 
   public accessProductRoutes(): Router {
