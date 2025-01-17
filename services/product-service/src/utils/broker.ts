@@ -39,7 +39,7 @@ export class KafkaBroker {
      * @param topic Kafka topic name
      * @param payload Message payload
      */
-    public static async KafkaPublish(topic: string, payload: any): Promise<void> {
+    public async KafkaPublish(topic: string, payload: any): Promise<void> {
         
         const kafkaClient = KafkaBroker.getKafkaClient(); 
 
@@ -53,4 +53,6 @@ export class KafkaBroker {
 
         await producer.disconnect();
     }
+
+    
 }
