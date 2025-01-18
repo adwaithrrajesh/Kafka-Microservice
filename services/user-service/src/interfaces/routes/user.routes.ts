@@ -14,6 +14,7 @@ export class UserRouter {
   private initiateRoutes(): void {
     this.router.get('/ping-test', this.handle(this.controller.pingUser));
     this.router.get('/ping-product',this.handle(this.controller.pingProduct))
+    this.router.post('/add-product',this.handle(this.controller.addProduct))
   }
 
   public accessUserRoutes(): Router {

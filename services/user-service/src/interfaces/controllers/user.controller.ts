@@ -21,4 +21,18 @@ export class userController{
         this.kafka.KafkaPublish('product-topic',payload)
         return res.status(200).json({message:"Send a PING to product service"})
     }
+
+    public async addProduct(req:Request,res:Response,next:NextFunction){
+        
+        const data = req.body
+
+        const payload ={
+            event:"AddProduct",
+            data: data
+        }
+
+        this.kafka.KafkaPublish('product-topic',payload)
+        return res.status(201).json({message:"Send product microservice to add product"})
+    }
+
 }
