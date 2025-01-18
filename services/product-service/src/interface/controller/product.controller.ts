@@ -3,19 +3,19 @@ import { Kafka } from 'kafkajs';
 import { KafkaBroker } from "../../utils/broker";
 
 
-export class productController{
+export class productController {
+    private kafkaBroker: KafkaBroker;
 
-    private kafkaBroker: KafkaBroker; 
     constructor() {
-        this.kafkaBroker = new KafkaBroker()
+        this.kafkaBroker = new KafkaBroker();
     }
 
-    public async pingUser(req:Request, res:Response,next:NextFunction){
+    public async pingUser(req: Request, res: Response, next: NextFunction) {
         const payload = {
-            event:"PING",
-            data:{message:"Hello from product service"}
-        }
-        this.kafkaBroker.KafkaPublish('user-topic',payload)
-        return res.status(200).json({message:"PING TESTED PRODUCT SERVICE"})
+            event: "PING",
+            data: { message: "Hello from product service" },
+        };
+        await this.kafkaBroker.KafkaPublish("user-topic", payload);
+        return res.status(200).json({ message: "SEND A PING TO USER SERVICE" });
     }
 }

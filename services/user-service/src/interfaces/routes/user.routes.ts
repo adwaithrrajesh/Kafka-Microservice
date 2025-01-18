@@ -13,6 +13,7 @@ export class UserRouter {
 
   private initiateRoutes(): void {
     this.router.get('/ping-test', this.handle(this.controller.pingUser));
+    this.router.get('/ping-product',this.handle(this.controller.pingProduct))
   }
 
   public accessUserRoutes(): Router {

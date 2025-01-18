@@ -1,17 +1,17 @@
 import { Kafka, logLevel } from 'kafkajs';
 import config from '../infrastructure/config';
-import { productService } from '../services/product.service';
+import { userService } from '../services/user.service';
 
-const KAFKA_GROUP = 'product-group';
-const KAFKA_TOPIC = 'product-topic';
+const KAFKA_GROUP = 'user-group';
+const KAFKA_TOPIC = 'user-topic';
 
 export class KafkaBroker {
 
     private static kafkaClient: Kafka | null = null; 
-    private serviceProduct: productService
+    private UserService : userService
 
     constructor(){
-        this.serviceProduct = new productService()
+        this.UserService = new userService()
     }
 
     /**
@@ -46,7 +46,7 @@ export class KafkaBroker {
      * @param payload Message payload
      */
     public async KafkaPublish(topic: string, payload: any): Promise<void> {
-        
+
         const kafkaClient = KafkaBroker.getKafkaClient(); 
 
         const producer = kafkaClient.producer();
@@ -54,17 +54,17 @@ export class KafkaBroker {
 
         await producer.send({
             topic: topic,
-            messages: [{ value: JSON.stringify(payload)}],
+            messages: [{ value: JSON.stringify(payload) }],
         });
 
-        console.log('Message successfully published',topic)
+        console.log('kafka published',topic)
 
         await producer.disconnect();
     }
 
     
     public async KafkaSubscribe():Promise<void>{
-        console.log("kafka subscribed from product")
+        console.log('kafka subscribed to user microservice')
         const kafka = KafkaBroker.getKafkaClient();
         const consumer = kafka.consumer({groupId:KAFKA_GROUP})
         consumer.connect();
@@ -73,7 +73,7 @@ export class KafkaBroker {
 
         await consumer.run({
             eachMessage: async ({message}) =>{
-                this.serviceProduct.handleKafkaPayload(message.value?.toString());
+                this.UserService.handleKafkaPayload(message.value?.toString())
             }
         })
     }

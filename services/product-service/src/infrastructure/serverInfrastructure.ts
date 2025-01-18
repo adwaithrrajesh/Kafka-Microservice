@@ -26,8 +26,8 @@ export class serverInfrastructure {
     }
 
     private async configMessageBrokers(): Promise<void> {
-        // This kafka instance will be available everywhere in this code 
         await this.kafka.createKafkaClient()
+        await this.kafka.KafkaSubscribe()
     }
 
 

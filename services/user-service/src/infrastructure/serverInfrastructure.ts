@@ -5,15 +5,19 @@ import config from "./config";
 import { logger } from "./logger";
 import { UserRouter } from "../interfaces/routes/user.routes";
 import morgan from "morgan";
+import { KafkaBroker } from "../utils/broker";
 
 export class serverInfrastructure{
     
     private app:Application;
     private route : UserRouter
+    private kafka : KafkaBroker
+
 
     constructor(){
         this.app = express();
         this.route = new UserRouter();
+        this.kafka = new KafkaBroker();
     }
 
 
@@ -23,6 +27,11 @@ export class serverInfrastructure{
         this.app.use(helmet());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(express.json());
+    }
+
+    private async configMessageBrokers(): Promise<void> {
+        await this.kafka.createKafkaClient()
+        await this.kafka.KafkaSubscribe()
     }
 
     private configRoutes():void{
@@ -41,6 +50,7 @@ export class serverInfrastructure{
 
     public initializeServer():void{
         this.initializeMiddleware()
+        this.configMessageBrokers()
         this.configRoutes()
         this.startListening()
     }

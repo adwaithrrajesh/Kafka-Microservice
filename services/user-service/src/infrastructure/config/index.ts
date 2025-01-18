@@ -6,5 +6,6 @@ dotenv.config()
  */
 
 export default{
-    PORT:process.env.PORT
+    PORT:process.env.PORT,
+    KAFKA_BROKER:process.env.KAFKA_BROKER || ''
 }
